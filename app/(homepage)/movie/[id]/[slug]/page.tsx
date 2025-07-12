@@ -1,6 +1,7 @@
 import { tmdbApi, getImageUrl } from "@/lib/tmdb";
 import { Star, Youtube, CornerUpRight } from "lucide-react";
 import { Movie } from "@/lib/tmdb";
+
 import Button from "@/components/Button";
 import Image from "next/image";
 
