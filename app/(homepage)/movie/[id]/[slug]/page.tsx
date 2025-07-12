@@ -16,12 +16,12 @@ interface Video {
 export default async function MovieDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = params;
+  const { id } = await params;
   const movie: Movie = await tmdbApi.getMovieDetails(id);
   const tmdbUrl = `https://www.themoviedb.org/movie/${movie.id}`;
-  const videos = movie.videos?.results as Video[]; // 👉 cast ke tipe yang benar
+  const videos = movie.videos?.results as Video[];
 
   const trailer = videos?.find(
     (vid) => vid.type === "Trailer" && vid.site === "YouTube"
@@ -67,7 +67,7 @@ export default async function MovieDetailPage({
           <hr />
 
           {/* Overview */}
-          <div className="my-4 text-gray-700 italic">
+          <div className="my-4 italic">
             <h2 className="text-xl font-semibold">Overview</h2>
             <p className="text-black leading-relaxed">{movie.overview}</p>
           </div>
