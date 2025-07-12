@@ -1,7 +1,8 @@
 import { Star, Calendar } from "lucide-react";
 import { getImageUrl } from "../lib/tmdb";
+import { Movie } from "@/lib/tmdb";
 import Link from "next/link";
-import { Movie } from '@/lib/tmdb';
+import Image from "next/image";
 
 // Tambahkan tipe props pada komponen
 interface MovieCardProps {
@@ -20,13 +21,15 @@ export default function MovieCard({ movie }: MovieCardProps) {
       <div className="movie-card group cursor-pointer">
         {/* Poster Image */}
         <div className="relative aspect-[2/3] overflow-hidden">
-          <img
+          <Image
             src={getImageUrl(movie.poster_path)}
             alt={movie.title}
+            width={500}
+            height={750}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
             loading="lazy"
           />
-
+          
           {/* Rating Badge */}
           <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded-full text-xs flex items-center space-x-1">
             <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />

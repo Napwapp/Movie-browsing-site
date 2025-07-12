@@ -2,6 +2,7 @@ import { tmdbApi, getImageUrl } from "@/lib/tmdb";
 import { Star, Youtube, CornerUpRight } from "lucide-react";
 import { Movie } from "@/lib/tmdb";
 import Button from "@/components/Button";
+import Image from "next/image";
 
 // Interface for Trailer
 interface Video {
@@ -15,7 +16,7 @@ interface Video {
 export default async function MovieDetailPage({
   params,
 }: {
-  params: { id: number };
+  params: { id: string };
 }) {
   const { id } = params;
   const movie: Movie = await tmdbApi.getMovieDetails(id);
@@ -35,9 +36,11 @@ export default async function MovieDetailPage({
       <div className="flex flex-col md:flex-row gap-8">
         {/* Poster */}
         <div className="md:w-1/3 flex-shrink-0">
-          <img
+          <Image
             src={getImageUrl(movie.poster_path)}
             alt={movie.title}
+            width={500}
+            height={750}
             className="w-full rounded-lg shadow-lg"
           />
         </div>
@@ -68,7 +71,7 @@ export default async function MovieDetailPage({
             <h2 className="text-xl font-semibold">Overview</h2>
             <p className="text-black leading-relaxed">{movie.overview}</p>
           </div>
-          
+
           {/* Button */}
           <div className="flex flex-wrap gap-4 mb-4">
             {youtubeUrl && (

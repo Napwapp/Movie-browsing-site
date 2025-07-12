@@ -30,7 +30,7 @@ export const tmdbApi = {
   },
   
   // Get detail movies
-  getMovieDetails: async (id: number) => {
+  getMovieDetails: async (id: string) => {
     const response = await fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&append_to_response=videos`);
     return response.json();
   },
