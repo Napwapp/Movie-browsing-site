@@ -1,11 +1,8 @@
 // This component file is only intended for movie data that I created myself.
 import Link from "next/link";
 import Image from "next/image";
-import EditButton from "./Edit";
 import { MovieTambahan } from "@/types/MovieTambahan";
-import { FormEdit } from "./Edit";
 import { Star, Calendar } from "lucide-react";
-import { useState } from "react";
 import { slugify } from "@/lib/slugify";
 
 type Props = {
@@ -13,23 +10,11 @@ type Props = {
 };
 
 export default function MovieTambahanCard({ movie }: Props) {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState<MovieTambahan | null> (null);
   const slug = slugify(movie.title);
 
   return (
     <>
       <div className="movie-card group cursor-pointer relative">
-        {/* Tombol Edit di pojok kanan atas */}
-        <div className="absolute top-2 right-2 z-20 flex gap-1">
-          <EditButton
-            onClick={() => {
-              setSelectedMovie(movie);
-              setShowModal(true);
-            }}
-          />
-        </div>
-
         <Link href={`/movietambahan/${movie.id}/${slug}`}>
           {/* Poster & Info */}
           <div className="relative aspect-[2/3] overflow-hidden">
@@ -68,16 +53,6 @@ export default function MovieTambahanCard({ movie }: Props) {
           </div>
         </Link>
       </div>
-
-      {showModal && selectedMovie && (
-        <FormEdit
-          movie={selectedMovie}
-          onClose={() => setShowModal(false)}
-          onSuccess={() => {
-            // Lakukan fetch ulang data movieTambahan jika diperlukan
-          }}
-        />
-      )}
     </>
   );
 }
