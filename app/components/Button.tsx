@@ -1,4 +1,10 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
+import { Plus } from "lucide-react";
+
+type props = {
+  text: string;
+  onClick?: () => void;
+}
 
 export default function Button({
   text,
@@ -19,5 +25,20 @@ export default function Button({
       {icon}
       <span className="ml-2">{text}</span>
     </a>
+  );
+}
+
+export function AddButton({ text, onClick }:props) {
+  return (
+    <>
+      <button
+        type="button"
+        onClick={onClick}
+        className="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition"
+      >
+        <Plus className="w-5 h-5" />
+        <span>{text}</span>
+      </button>
+    </>
   );
 }

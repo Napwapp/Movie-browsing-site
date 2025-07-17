@@ -1,8 +1,10 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { tmdbApi } from '../lib/tmdb';
 import MovieCard from '../components/MovieCard';
 import type { Movie } from '../lib/tmdb'
+import Films from "./Films";
 
 export default function Home() {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -22,6 +24,8 @@ export default function Home() {
 
   return (
     <>
+      <Films />
+
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8 text-gray-900">Popular Movies</h1>
         <div className="movie-grid">
