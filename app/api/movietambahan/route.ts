@@ -1,8 +1,9 @@
 import { MovieTambahan } from "@/types/MovieTambahan";
 import { writeFile } from "fs/promises";
-import path from "path";
 import { NextRequest, NextResponse } from "next/server";
 import { movieTambahan } from "@/lib/MovieData";
+import { unlink } from "fs/promises";
+import path from "path";
 
 // Add Movies
 export async function POST(req: NextRequest) {
@@ -82,3 +83,35 @@ export async function PATCH(request: NextRequest) {
   }
 }
 
+// Delete Movie
+export async function DELETE(req: NextRequest) {
+  try {
+    const { id } = await req.json(); 
+    const index = movieTambahan.findIndex((movie) => movie.id === id);
+    const posterPath = movieTambahan[index].poster_path;
+    // Path absolut untuk file yang akan dihapus
+    const absolutePosterPath = path.join(process.cwd(), "public", posterPath);
+
+    if (index === -1) {
+      return NextResponse.json({ error: "Movie tidak ditemukan" }, { status: 404 });
+    }
+
+    // Hapus movie dari array
+    movieTambahan.splice(index, 1);
+
+    // Coba hapus file poster jika ada
+    try {
+      await unlink(absolutePosterPath);
+    } catch (err) {
+      console.warn("Gagal menghapus poster:", err);
+    }
+
+    return NextResponse.json({ message: "Movie deleted successfully" });
+  } catch (error) {
+    console.error("DELETE API Error:", error);
+    return NextResponse.json(
+      { message: "Gagal menghapus film di server." },
+      { status: 500 }
+    );
+  }
+}

@@ -1,7 +1,12 @@
-export default function page() {
-    return (
-        <>
-            <h1>Manage Films</h1>
-        </>
-    )
-};
+
+import AddFilms from "./AddFilms"; // jika kamu sudah punya komponen Add
+import AddedFilmsTable from "./AddedFIlmsTable";
+
+export default function Page() {
+  return (
+    <>
+      <AddFilms />
+      <AddedFilmsTable />
+    </>
+  );
+}
