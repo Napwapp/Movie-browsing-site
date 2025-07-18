@@ -8,11 +8,9 @@ function getImageUrl(posterPath: string): string {
   return `${posterPath}`;
 }
 
-
 interface PageProps {
   params: {
     id: string;
-    slug: string;
   };
 }
 
