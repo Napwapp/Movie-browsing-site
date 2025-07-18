@@ -10,19 +10,22 @@ function getImageUrl(posterPath: string): string {
 interface PageProps {
   params: {
     id: string;
+    slug: string;
   };
 }
 
-export default async function Page({ params: { id: idString, } }: PageProps) { 
-  const id = parseInt(idString); 
+export default async function Page({ params: { id: idString } }: PageProps) {
+  const id = parseInt(idString);
   const movie = await fetchMovieTambahanById(id);
 
   if (isNaN(id)) {
     return notFound();
   }
+
   if (!movie) {
     return notFound();
   }
+
 
   return (
     <div className="max-w-6xl px-4 py-8">
