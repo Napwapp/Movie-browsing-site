@@ -7,11 +7,14 @@ function getImageUrl(posterPath: string): string {
   return `${posterPath}`;
 }
 
-export default async function Page({
-  params,
-}: {
-  params: { id: string; slug: string };
-}) {
+interface PageProps {
+  params: {
+    id: string;
+    slug: string;
+  };
+}
+
+export default async function Page({ params }: PageProps) {
   const id = parseInt(params.id, 10);
   const movie = await fetchMovieTambahanById(id);
 
