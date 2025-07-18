@@ -7,19 +7,15 @@ function getImageUrl(posterPath: string): string {
   return `${posterPath}`;
 }
 
-interface MoviePageParams {
-  params: {
-    id: string;
-    slug: string;
-  };
-}
-
-export default async function Page({ params: { id: idString } }: MoviePageParams) {
-  const id = parseInt(idString);
+export default async function Page({
+  params,
+}: {
+  params: { id: string; slug: string };
+}) {
+  const id = parseInt(params.id, 10);
   const movie = await fetchMovieTambahanById(id);
-  
-  if (isNaN(id)) {return notFound();}
-  if (!movie) {return notFound();}
+
+  if (isNaN(id) || !movie) return notFound();
 
   return (
     <div className="max-w-6xl px-4 py-8">
