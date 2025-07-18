@@ -8,17 +8,17 @@ function getImageUrl(posterPath: string): string {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-    slug: string;
-  };
+  }>;
 }
 
 export default async function Page({ params }: PageProps) {
-  const id = parseInt(params.id, 10);
-  const movie = await fetchMovieTambahanById(id);
+  const { id } = await params;
+  const movieId = parseInt(id, 10);
+  const movie = await fetchMovieTambahanById(movieId);
 
-  if (isNaN(id) || !movie) return notFound();
+  if (isNaN(movieId) || !movie) return notFound();
 
   return (
     <div className="max-w-6xl px-4 py-8">
