@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 import { fetchMovieTambahanById } from "@/lib/MovieTambahan";
 
-
 function getImageUrl(posterPath: string): string {
   return `${posterPath}`;
 }
