@@ -3,10 +3,11 @@ import { movieTambahan } from "@/lib/MovieData";
 
 export async function GET(
   request: Request,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const id = parseInt(context.params.id, 10);
-  const movie = movieTambahan.find((m) => m.id === id);
+  const { id } = await context.params;
+  const movieId = parseInt(id, 10);
+  const movie = movieTambahan.find((m) => m.id === movieId);
 
   if (!movie) {
     return NextResponse.json({ error: "Movie not found" }, { status: 404 });
