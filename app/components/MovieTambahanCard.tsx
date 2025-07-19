@@ -37,7 +37,7 @@ export default function MovieTambahanCard({ movie }: Props) {
               <Calendar className="h-3 w-3" />
 
               <div className="truncate max-w-[140px] ">
-                {movie.genres.map((g) => g.name).join(", ")}
+                {movie.genres.join(", ")}
               </div>
 
               <span>{new Date(movie.release_date).getFullYear()}</span>

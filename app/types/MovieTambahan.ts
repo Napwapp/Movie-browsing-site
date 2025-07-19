@@ -4,6 +4,6 @@ export type MovieTambahan = {
   poster_path: string;
   vote_average: number;
   release_date: string;
-  genres: { name: string }[];
+  genres: string[];
   overview: string;
 };

@@ -1,4 +1,3 @@
-
 import AddFilms from "./AddFilms"; // jika kamu sudah punya komponen Add
 import AddedFilmsTable from "./AddedFIlmsTable";
 

@@ -25,7 +25,7 @@ export default function AddedFilmsTable() {
   }, []);
 
   return (
-    <div className="mb-8 w-full overflow-x-auto px-4">
+    <div className="mb-8 w-full overflow-x-auto mx-auto px-4">
       <table className="min-w-full text-left text-sm">
         <thead>
           <tr className="border-b border-gray-400">
@@ -67,7 +67,7 @@ export default function AddedFilmsTable() {
               </td>
 
               <td className="px-4 py-3">
-                {film.genres.map((g) => g.name).join(", ")}
+                {film.genres.join(", ")}
               </td>
 
               <td className="px-4 py-3">
