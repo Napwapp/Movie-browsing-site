@@ -10,14 +10,17 @@ function getImageUrl(posterPath: string): string {
 interface PageProps {
   params: Promise<{
     id: string;
+    slug: string; // Tambahkan ini!
   }>;
 }
 
 export default async function Page({ params }: PageProps) {
-  const { id } = await params;
+  const { id, slug } = await params; 
+  console.log('Params:', { id, slug });
+  
   const movieId = parseInt(id, 10);
   const movie = await fetchMovieTambahanById(movieId);
-
+  
   if (isNaN(movieId) || !movie) return notFound();
 
   return (
@@ -40,13 +43,13 @@ export default async function Page({ params }: PageProps) {
           <p className="text-gray-700 mb-2 font-medium">
             Genres:{" "}
             <span className="text-gray-500">
-              {movie.genres.map((genre) => genre.name).join(", ")}
+              {movie.genres.join(", ")}
             </span>
           </p>
 
           <p className="text-gray-700 mb-2 font-medium">
             Release Date:{" "}
-            <span className="text-gray-500">{movie.release_date}</span>
+            <span className="text-gray-500">{new Date(movie.release_date).toLocaleDateString("id-ID")}</span>
           </p>
 
           <div className="flex items-center text-yellow-500 mb-2">

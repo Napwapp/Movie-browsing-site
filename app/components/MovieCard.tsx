@@ -45,11 +45,6 @@ export default function MovieCard({ movie }: MovieCardProps) {
 
           <div className="flex items-center space-x-2 text-xs text-gray-400">
             <Calendar className="h-3 w-3" />
-            <span>
-              {Array.isArray(movie.genres)
-                ? movie.genres.map((genre) => genre.name).join(", ")
-                : ""}
-            </span>
             <span>{new Date(movie.release_date).getFullYear()}</span>
           </div>
         </div>
