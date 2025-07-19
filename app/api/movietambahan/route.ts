@@ -1,11 +1,13 @@
-import { MovieTambahan } from "@/types/MovieTambahan";
-import { writeFile } from "fs/promises";
-import { NextRequest, NextResponse } from "next/server";
-import { movieTambahan } from "@/lib/MovieData";
-import { unlink } from "fs/promises";
-import path from "path";
+// import { MovieTambahan } from "@/types/MovieTambahan";
+// import { movieTambahan } from "@/lib/MovieData";
+// import { unlink } from "fs/promises";
 
-// Add Movies
+import { NextRequest, NextResponse } from "next/server";
+import { writeFile } from "fs/promises";
+import { prisma } from "@/lib/prisma";
+import path from "path";
+import { unlink } from "fs/promises";
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -13,71 +15,65 @@ export async function POST(req: NextRequest) {
     const title = formData.get("title") as string;
     const vote_average = parseFloat(formData.get("vote_average") as string);
     const release_date = formData.get("release_date") as string;
-    const genreString = formData.get("genres") as string;
-    const genres = genreString.split(",").map((name) => ({ name: name.trim() }));
     const overview = formData.get("overview") as string;
+
+    const genreString = formData.get("genres") as string;
+    const genres = genreString.split(",").map((g) => g.trim());
 
     const file = formData.get("poster_path") as File;
     const buffer = Buffer.from(await file.arrayBuffer());
     const fileName = `${Date.now()}-${file.name}`;
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      "images",
-      "poster-movie",
-      fileName
-    );
+    const filePath = path.join(process.cwd(), "public", "images", "poster-movie", fileName);
     await writeFile(filePath, buffer);
 
-    const newMovie: MovieTambahan = {
-      id: Date.now(),
-      title,
-      vote_average,
-      release_date,
-      overview,
-      genres,
-      poster_path: `/images/poster-movie/${fileName}`,
-    };
-
-    movieTambahan.push(newMovie);
-
-    return NextResponse.json({
-      message: "Film berhasil ditambahkan",
-      data: newMovie,
+    const newMovie = await prisma.movieTambahan.create({
+      data: {
+        title,
+        vote_average,
+        release_date: new Date(release_date),
+        overview,
+        genres,
+        poster_path: `/images/poster-movie/${fileName}`,
+      },
     });
+
+    return NextResponse.json({ message: "Film berhasil ditambahkan", data: newMovie });
   } catch (error) {
-    console.error("API error:", error);
-    return NextResponse.json(
-      { message: "Gagal menambahkan film di server." },
-      { status: 500 }
-    );
+    console.error("POST Error:", error);
+    return NextResponse.json({ message: "Gagal menambahkan film." }, { status: 500 });
   }
 }
 
 // Read Movies
 export async function GET() {
-  return NextResponse.json(movieTambahan);
+  try {
+    const movies = await prisma.movieTambahan.findMany();
+    return NextResponse.json(movies);
+  } catch (error) {
+    console.error("GET Error:", error);
+    return NextResponse.json({ message: "Gagal mengambil data film." }, { status: 500 });
+  }
 }
 
 // Edit Movies
-export async function PATCH(request: NextRequest) {
+export async function PATCH(request: Request) {
   try {
     const body = await request.json();
-    const { id, ...updatedData } = body;
+    const { id, release_date, ...rest } = body;
 
-    const index = movieTambahan.findIndex((movie) => movie.id === id);
+    const updated = await prisma.movieTambahan.update({
+      where: { id },
+      data: {
+        ...rest,
+        release_date: new Date(release_date),
+      },
+    });
 
-    if (index === -1) {
-      return NextResponse.json({ error: "Movie not found" }, { status: 404 });
-    }
-
-    movieTambahan[index] = { ...movieTambahan[index], ...updatedData };
-
-    return NextResponse.json({ message: "Movie updated", data: movieTambahan[index] });
+    return NextResponse.json(updated);
   } catch (error) {
-    console.error("API error:", error);
+    console.error("PATCH Error:", error);
     return NextResponse.json(
-      { message: "Gagal mengedit film di server." },
+      { message: "Gagal mengupdate data film." },
       { status: 500 }
     );
   }
@@ -86,32 +82,25 @@ export async function PATCH(request: NextRequest) {
 // Delete Movie
 export async function DELETE(req: NextRequest) {
   try {
-    const { id } = await req.json(); 
-    const index = movieTambahan.findIndex((movie) => movie.id === id);
-    const posterPath = movieTambahan[index].poster_path;
-    // Path absolut untuk file yang akan dihapus
-    const absolutePosterPath = path.join(process.cwd(), "public", posterPath);
+    const { id } = await req.json();
 
-    if (index === -1) {
-      return NextResponse.json({ error: "Movie tidak ditemukan" }, { status: 404 });
+    const existing = await prisma.movieTambahan.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ error: "Film tidak ditemukan" }, { status: 404 });
     }
 
-    // Hapus movie dari array
-    movieTambahan.splice(index, 1);
+    const posterPath = path.join(process.cwd(), "public", existing.poster_path);
+    await prisma.movieTambahan.delete({ where: { id } });
 
-    // Coba hapus file poster jika ada
     try {
-      await unlink(absolutePosterPath);
+      await unlink(posterPath);
     } catch (err) {
       console.warn("Gagal menghapus poster:", err);
     }
 
-    return NextResponse.json({ message: "Movie deleted successfully" });
+    return NextResponse.json({ message: "Film berhasil dihapus" });
   } catch (error) {
-    console.error("DELETE API Error:", error);
-    return NextResponse.json(
-      { message: "Gagal menghapus film di server." },
-      { status: 500 }
-    );
+    console.error("DELETE Error:", error);
+    return NextResponse.json({ message: "Gagal menghapus film." }, { status: 500 });
   }
 }

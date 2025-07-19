@@ -45,7 +45,7 @@ export function FormEdit({
       release_date: formData.get("release_date"),
       genres: (formData.get("genres") as string)
         ?.split(",")
-        .map((g) => ({ name: g.trim() })),
+        .map((g) => g.trim()),
       overview: formData.get("overview"),
     };
 
@@ -88,22 +88,31 @@ export function FormEdit({
             required
           />
 
-          <Label text="Berikan Ratings" />
+          <Label text="Edit Ratings" />
           <input
             type="number"
             name="vote_average"
-            step="0.5"
+            step="any"
+            min="0"
+            max="10"
             defaultValue={movie.vote_average}
-            placeholder="Rating"
+            placeholder="Rating (0-10)"
             className="w-full px-3 py-2 border border-gray-400 rounded-md"
             required
+            onInput={(e) => {
+              const val = parseFloat(e.currentTarget.value);
+              if (val > 10) e.currentTarget.value = "10";
+              if (val < 0) e.currentTarget.value = "0";
+            }}
           />
 
           <Label text="Tanggal Rilis" />
           <input
             type="date"
             name="release_date"
-            defaultValue={movie.release_date}
+            defaultValue={
+              new Date(movie.release_date).toISOString().split("T")[0]
+            }
             className="w-full px-3 py-2 border border-gray-400 rounded-md"
             required
           />
@@ -112,7 +121,7 @@ export function FormEdit({
           <input
             type="text"
             name="genres"
-            defaultValue={movie.genres.map((genre) => genre.name).join(", ")}
+            defaultValue={movie.genres.join(", ")}
             placeholder="Genre (pisahkan dengan koma)"
             className="w-full px-3 py-2 border border-gray-400 rounded-md"
             required
