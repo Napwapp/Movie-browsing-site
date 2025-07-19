@@ -19,7 +19,7 @@ export default function MovieTambahanCard({ movie }: Props) {
           {/* Poster & Info */}
           <div className="relative aspect-[2/3] overflow-hidden">
             <Image
-              src={movie.poster_path}
+              src={movie.poster_path || "/images/no-preview-image.webp"}
               alt={movie.title}
               width={500}
               height={750}
