@@ -36,4 +36,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 "# Movie-browsing-site" 
 
-<!-- Panduan Settings env -->
+## Panduan Settings .env
+Saya menggunakan Neon dengan Prisma sebagai ORM nya.
+
+Saya hanya mengikuti cara pengkoneksian database sesuai yang diajarkan di pertemuan ke 5 dan sesuai instruksi dari neon saja. Tidak ada settingan khusus apapun. Saya mengambil key dan value yang diberikan neon saat membuat database, lalu menyalinnya dan memasangnya ke file .env
