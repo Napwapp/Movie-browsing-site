@@ -16,7 +16,7 @@ datasource db {
 model MovieTambahan {
   id            Int      @id @default(autoincrement())
   title         String
-  poster_path   String
+  poster_path   String?
   vote_average  Float
   release_date  DateTime
   genres        Json

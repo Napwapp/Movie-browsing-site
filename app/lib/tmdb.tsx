@@ -1,6 +1,7 @@
 const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 
+// Untuk trailer yt
 export type Video = {
   id: string;
   key: string;
