@@ -33,7 +33,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
           {/* Rating Badge */}
           <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded-full text-xs flex items-center space-x-1">
             <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-            <span>{movie.vote_average.toFixed(1)}</span>
+            <span>{movie.vote_average.toFixed(1) || 0}</span>
           </div>
         </div>
 

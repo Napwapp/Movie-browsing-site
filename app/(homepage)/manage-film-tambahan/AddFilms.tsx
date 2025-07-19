@@ -95,7 +95,7 @@ export default function AddFilms() {
                 step="any"
                 min="0"
                 max="10"
-                placeholder="Rating (0-10)"
+                placeholder="Masukkan rating"
                 className="w-full px-3 py-2 border border-gray-400 rounded-md"
                 required
                 onInput={(e) => {
