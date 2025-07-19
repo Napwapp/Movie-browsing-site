@@ -38,7 +38,7 @@ export default async function MovieDetailPage({
         {/* Poster */}
         <div className="md:w-1/3 flex-shrink-0">
           <Image
-            src={getImageUrl(movie.poster_path)}
+            src={getImageUrl(movie.poster_path || "/images/no-preview-image.webp")}
             alt={movie.title}
             width={500}
             height={750}
