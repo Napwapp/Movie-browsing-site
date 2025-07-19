@@ -89,7 +89,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: "Film tidak ditemukan" }, { status: 404 });
     }
 
-    const posterPath = path.join(process.cwd(), "public", existing.poster_path);
+    const posterPath = path.join(process.cwd(), "public", existing.poster_path || "/images/no-preview-image.webp");
     await prisma.movieTambahan.delete({ where: { id } });
 
     try {

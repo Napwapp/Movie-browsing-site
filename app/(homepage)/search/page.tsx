@@ -64,7 +64,6 @@ export default function SearchPage() {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {results.map((movie) => {
-            // Jika properti `poster_path` dimulai dengan `/images`, maka itu data lokal
             const isLocal = "poster_path" in movie && movie.poster_path?.startsWith("/images");
 
             return isLocal ? (
