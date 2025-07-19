@@ -46,7 +46,7 @@ export default function AddedFilmsTable() {
 
               <td className="px-4 py-3">
                 <Image
-                  src={film.poster_path}
+                  src={film.poster_path || "/images/no-preview-image.webp"}
                   alt={film.title}
                   width={50}
                   height={50}
